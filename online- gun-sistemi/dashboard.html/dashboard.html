@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script src="auth.js"></script>
+<script>
+checkAuth();
+</script>
+
+<h2>Alınan Günler</h2>
+<script>
+if (localStorage.getItem("loggedInUser") === "admin") {
+document.write('<a href="admin.html">Admin Panel</a><br><br>');
+}
+</script>
+<ul id="liste"></ul>
+
+<a href="gun.html">Gün Al</a>
+<br><br>
+<button onclick="logout()">Çıkış Yap</button>
+
+<script>
+let gunler = JSON.parse(localStorage.getItem("gunler")) || {};
+let liste = document.getElementById("liste");
+
+if (Object.keys(gunler).length === 0) {
+liste.innerHTML = "<li>Henüz gün alınmadı</li>";
+}
+
+for (let gun in gunler) {
+let li = document.createElement("li");
+li.innerText = gun + " : " + gunler[gun];
+liste.appendChild(li);
+}
+</script>
+
+<<script>
+function haftayiKontrolEt() {
+let bugun = new Date();
+let hafta = bugun.getFullYear() + "-" + bugun.getWeek;
+
+let kayitliHafta = localStorage.getItem("aktifHafta");
+
+if (kayitliHafta !== hafta) {
+localStorage.setItem("aktifHafta", hafta);
+localStorage.removeItem("gunler");
+}
+}
+
+haftayiKontrolEt();
+</script>>
+</html>

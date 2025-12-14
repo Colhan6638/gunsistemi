@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script src="auth.js"></script>
+<script>
+checkAuth();
+if (!isAdmin()) {
+alert("Yetkin yok");
+window.location.href = "dashboard.html";
+}
+</script>
+
+<h2>Admin Panel</h2>
+
+<button onclick="tumGunleriSil()">Tüm Günleri Sıfırla</button>
+
+<h3>Alınan Günler</h3>
+<ul id="liste"></ul>
+
+<br>
+<a href="dashboard.html">Dashboard</a>
+
+<script>
+function tumGunleriSil() {
+if (confirm("Tüm günler silinsin mi?")) {
+localStorage.removeItem("gunler");
+location.reload();
+}
+}
+
+let gunler = JSON.parse(localStorage.getItem("gunler")) || {};
+let liste = document.getElementById("liste");
+
+for (let gun in gunler) {
+let li = document.createElement("li");
+li.innerHTML =
+gun + " : " + gunler[gun] +
+' <button onclick="gunSil(\\'' + gun + '\\')">Sil</button>';
+liste.appendChild(li);
+}
+
+function gunSil(gun) {
+let gunler = JSON.parse(localStorage.getItem("gunler")) || {};
+delete gunler[gun];
+localStorage.setItem("gunler", JSON.stringify(gunler));
+location.reload();
+}
+</script>
+
+</body>
+</html>

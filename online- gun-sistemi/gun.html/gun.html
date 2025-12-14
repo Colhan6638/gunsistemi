@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Gün Al</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script src="auth.js"></script>
+<script>
+checkAuth();
+</script>
+
+<h2>Gün Seç</h2>
+
+<select id="gun">
+<option value="">Gün seç</option>
+<option>Pazartesi</option>
+<option>Salı</option>
+<option>Çarşamba</option>
+<option>Perşembe</option>
+<option>Cuma</option>
+<option>Cumartesi</option>
+<option>Pazar</option>
+</select>
+
+<br><br>
+
+<button onclick="gunAl()">Günü Al</button>
+
+<p id="sonuc"></p>
+
+<script>
+function gunAl() {
+let secilenGun = document.getElementById("gun").value;
+let user = localStorage.getItem("loggedInUser");
+
+if (!secilenGun) {
+alert("Gün seç");
+return;
+}
+
+let gunler = JSON.parse(localStorage.getItem("gunler")) || {};
+
+// Aynı kullanıcı ikinci gün alamaz
+for (let g in gunler) {
+if (gunler[g] === user) {
+alert("Zaten bir gün almışsın");
+return;
+}
+}
+
+if (gunler[secilenGun]) {
+alert("Bu gün alınmış");
+return;
+}
+
+gunler[secilenGun] = user;
+localStorage.setItem("gunler", JSON.stringify(gunler));
+
+document.getElementById("sonuc").innerText =
+secilenGun + " günü sana verildi";
+}
+</script>
+
+<br><br>
+<a href="dashboard.html">Dashboard</a>
+
+</body>
+</html>
